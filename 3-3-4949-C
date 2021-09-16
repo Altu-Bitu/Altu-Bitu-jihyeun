@@ -1,0 +1,53 @@
+// 우선 C로 생각해봤던 코드입니다..!
+
+#include <stdio.h>
+#define MAX_SIZE 100;
+
+char stack[MAX_SIZE];
+int top = -1;
+
+void stack_full(){
+	printf("stack is full\n");
+}
+
+char stack_empty(){
+	printf("stack is empty\n");
+	return NULL; 
+}
+
+void push(char x){
+	if(top>=MAX_SIZE-1){
+		stack_full();
+		return;
+	}
+	stack[++top] = x;
+}
+
+char pop(){
+	if(top==-1)
+	return stack_empty();
+	
+	return stack[top--];
+}
+
+int main(){
+	
+	int i;
+	char tmp;
+	char expr[];
+	
+	gets(expr); // 이걸 괄호마다 반복...?  
+	for(i=0;i<strlen(expr);i++){
+		if(expr[i]=='(')
+			push('(');
+		else if(expr[i]==')'){
+			tmp=pop();
+			if(tmp==NULL){
+				return 0;
+			}
+		}
+				
+	}
+	
+	return 0;
+}
