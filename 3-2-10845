@@ -1,0 +1,106 @@
+#include <iostream>
+#include <vector>
+#include <queue> // 원형 큐 그림 생각 
+
+using namespace std;
+const int SIZE = 10001; // 원형 큐에서 크기 2인데 칸 4개 + full) front==rear, front와 rear의 차이가 1 ? 
+
+int front_pointer = 0, rear_pointer = 0;
+vector<int> queue_vec(SIZE);
+
+// empty func 
+bool empty() {
+    return front_pointer == rear_pointer; // 원형 큐의 시작점은 front와 rear가 같이 시작 
+}
+
+// full func
+bool full() {
+    return (rear_pointer + 1) % SIZE == front_pointer; // 모듈러 : 범위를 벗어날 수 있기 때문에 해주는 장치 
+}
+
+// push func
+void push(int k) { // rear가 한 칸 옯겨가고 그 위치에 data 삽입  
+    rear_pointer = (rear_pointer + 1) % SIZE; // 모듈러 해줘야 하니까 다시 써줌 
+    queue_vec[rear_pointer] = k; // 인덱스에 저장 
+}
+
+// pop func 
+int pop() { // 이번엔 front가 한 칸 옮겨가고 그 위치에 data 삭제(=pop) 
+    front_pointer = (front_pointer + 1) % SIZE;
+    return queue_vec[front_pointer];
+}
+
+// size func
+int size() { //rear = 1, front = 2
+    int tmp = (rear_pointer - front_pointer);
+    if (tmp < 0) // 음수일 경우! ex. rear = 1, front = 2 일때.. 
+        tmp += SIZE; // !!! 
+    return tmp;
+}
+
+// front func
+int front() {
+    int tmp = (front_pointer + 1) % SIZE; // +1을 하는 이유..?  
+    return queue_vec[tmp];
+}
+
+// back func
+int back() {
+    return queue_vec[rear_pointer];
+}
+
+// 처음엔 같았다가 들어가는 입구와 나가는 입구로 갈라지는 걸 이해..  
+
+int main() {
+    int n, k;
+    string cmd;
+    queue<int> q;
+
+    cin >> n;
+    while (n--) {
+        cin >> cmd;
+        if (cmd == "push") {
+            cin >> k;
+        /* if (!full()) 라이브러리 사용시 필요 없음
+               q.push(k); */
+            q.push(k);
+            continue;
+        }
+        if (cmd == "pop") {
+            if (q.empty()) // pop 할 때 empty check!!!!  
+                cout << -1 << '\n';
+            else {
+                cout << q.front() << '\n'; // pop func이 return void라 front return 하게 만들어 줌  
+                q.pop();
+            }
+            continue;
+        }
+        if (cmd == "size") {
+            cout << q.size() << '\n';
+            continue;
+        }
+        if (cmd == "empty") {
+            cout << q.empty() << '\n';
+            continue;
+        }
+        if (cmd == "front") {
+            if (q.empty())
+                cout << -1 << '\n';
+            else
+                cout << q.front() << '\n';
+            continue;
+        }
+        if (cmd == "back") {
+            if (q.empty())
+                cout << -1 << '\n';
+            else
+                cout << q.back() << '\n';
+            continue;
+        }
+    }
+
+    while (!q.empty()) {
+        cout << q.front() << ' ';
+        q.pop(); // 여기서 pop을 안하면 무한루프 
+    }
+}
