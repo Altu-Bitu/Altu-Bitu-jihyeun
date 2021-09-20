@@ -1,1 +1,72 @@
+#include <iostream> // 힙을 구현하는 문제
+#include <vector> // 그림보면서 생각하기!
+#include <queue> // 우선순위 큐는 힙으로 구 
+ 
+using namespace std;
 
+vector<int> heap_vec; // heap_vec이라는 벡터 사용
+
+//empty check func
+bool empty() { // bool은 비어있냐 아니냐
+    return heap_vec.size() == 1; // 1인 이유는 항상 0이 채워져 있을거니까
+}
+
+//push - 맨 뒤 위치에 놓는다
+void push(int num) {
+    int idx = heap_vec.size(); //이번에 push할 데이터의 인덱스, 1의 위치에 들어가야 함
+    heap_vec.push_back(num); // 수 넣기( 넣으면 비교하면서 위로 올라감)
+
+    //1) root = 1에 도달하거나, 2) 더이상 상위노드보다 값이 크지 않다면 반복문 탈출 - 종료조건!
+    while (idx != 1 && heap_vec[idx] > heap_vec[idx / 2]) {
+        swap(heap_vec[idx], heap_vec[idx / 2]); //하위노드와 상위노드의 값을 SWAP
+        idx /= 2; //상위노드로 이동, 위치가 올라갔으니 인덱스도 올려줌
+    }
+}
+
+//pop func
+int pop() {} // pop이므로 int반환
+    int item = heap_vec[1]; // 0이 아니라 1부터 시작
+    swap현(heap_vec[1], heap_vec[heap_vec.size() - 1]); //힙의 맨 마지막 값과 바꿈
+    heap_vec.pop_back(); //데이터 제거
+    // 데이터를 맨 위로 올림
+
+    int parent = 1, child = 2;
+    while (child < heap_vec.size()) {
+        //만약 오른쪽 하위노드가 존재하면 왼쪽 하위노드와 값을 비교하고, 상위노드와 비교할 하위노드 갱신
+        if (child + 1 < heap_vec.size() && heap_vec[child] < heap_vec[child + 1])
+            child++;
+        // 자식과 부모 비교    
+        if (heap_vec[parent] >= heap_vec[child]) //나보다 큰 하위노드가 없다
+            break; // 자식 중 가장 우선순위 큰 애랑 비교
+        swap(heap_vec[parent], heap_vec[child]); //상위노드와 하위노드의 값을 바꿈
+        parent = child;
+        // 자식이 우선순위가 높은 경우 자리를 바꿈
+        child = parent * 2; // 인덱스 상의 규칙
+    }
+    return item; // 
+}
+
+int main() {
+    //입출력 속도 향상 // stdio와 싱크를 맞추지 않겠음! 
+    ios::sync_with_stdio(false);
+    cin.tie(NULL); // 연결을 끊음
+    // 이 부분까지 추가해야 속도가 맞음
+
+    int n, x;
+    priority_queue<int> pq; // 큐 
+    heap_vec.push_back(0); //인덱스가 1부터 시작하도록 처음부터 push
+
+    cin >> n; // 명령하는 수 입력
+    while (n--) {
+        cin >> x; // 정수 x입력
+        if (x == 0) { // x=0이라면 pop
+            if (pq.empty()) // pop하기 전에 empty check
+                cout << 0 << '\n';
+            else {
+                cout << pq.top() << '\n';
+                pq.pop();
+            }
+        } else
+            pq.push(x);
+    }
+}
