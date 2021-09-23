@@ -1,0 +1,107 @@
+#include <iostream>
+#include <vector>
+#include <stack> // 크기의 제한이 없는 stack library 사용 
+
+// stack actualize
+
+using namespace std; // namespace의 명시없이 사용가능 
+const int SIZE = 10000; // n의 범위가 1<=n<=10000, stack의 크기를 정해주기 위함 
+
+int top_pointer = -1; // stack의 top은 -1로 시작
+// 변수이름이 pointer인 이유는 뭘까? 
+vector<int> stack_vec(SIZE); // int를 저장하는 stack_vec이란 이름의  vector, string과 유사개념  
+// vector는 필요에 따라 n의 개수가 자동적으로 변화가능-공간 효율성 높음! 
+
+// empty function
+bool empty(){ // bool은 true/false만 식별가능 - bool을 쓴 이유는 경우의 수가 딱 2개뿐(비어있든,아니든)  
+	return top_pointer == -1; // true : stack이 비었을 때의 top은 -1 
+}
+
+// full function
+bool full(){ // 마찬가지로 bool을 쓴 이유는 경우의 수가 딱 2개뿐(차있든, 아니든) 
+	return top_pointer == SIZE-1; // top의 시작이 -1이었기 때문 
+} 
+
+// push function
+void push(int k){
+	stack_vec[++top_pointer]=k; // top의 숫자를 먼저 올려주고 넣음 
+} 
+
+// pop function 
+int pop(){
+	return stack_vec[top_pointer]; // 맨 위의 것을 return하고 top -1, 튀어나온 수 자체가 pop 
+}
+
+// size function
+int size(){
+	return top_pointer+1; // top이 -1부터 시작하니까 +1을 해야 0번 인덱스부터 셈가능 
+} 
+
+// top function
+int top(){
+	return stack_vec[top_pointer]; // 인덱스 출력  
+} 
+ 
+// 여기까지가 stack이 가진 기능들을 함수화
+
+
+int main(){
+	
+	int n,k;
+	string cmd; // 글로 된(string) 명령어 입력 
+	stack<int>s; // stack 함수 s
+	
+	cin>>n; // n을 입력 
+	while(n--){ // n-1이 stack의 size
+		cin>>cmd; // 명령어를 입력 
+		if(cmd=="push"){
+			cin>>k; // k 입력 
+			s.push(k); // 위에서 만든 stack의 push func 사용 
+			continue;
+			
+			/* 원래는
+			if(!full())
+				push(k)
+			continue; 였지만, library사용으로 생략*/ 
+			
+			 
+		} 
+		
+		if(cmd=="pop"){
+			if(s.empty())
+				cout<<-1<<endl;
+			else{
+				cout<<s.size()<<endl;
+				s.pop(); // 일치하지 않으면 출력  
+			}	
+		} 
+		
+		if(cmd=="size"){ // full일 경우 
+			cout<<s.size()<<endl; // 꽉찬 인덱스 출력 
+			continue;
+		} 
+		
+		if(cmd=="empty"){
+			cout<<s.empty()<<endl;
+			continue;
+		}
+		
+		if(cmd=="top"){
+			if(s.empty()){
+				cout<<-1<<endl;
+			}
+			else{
+				cout<<s.top()<<endl;
+			}
+			continue;
+		}
+		
+		while(!s.empty()){
+			cout<<s.top()<<endl;
+			s.pop(); // LIFO로 빼기 시작 
+		}
+		
+		
+}
+return 0; 
+}
