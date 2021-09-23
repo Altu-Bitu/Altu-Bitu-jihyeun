@@ -1,0 +1,28 @@
+#include <iostream> // 유클리드 호제법도 재귀를 활용했으니까 일단 재귀로 풀어봤구요...!  
+
+using namespace std;
+
+int factRecursion(int n){ // 재귀를 이용한 fact 
+	int ans;
+	
+	if(n>1)
+		ans=n*factRecursion(n-1);
+	else
+		ans=1;
+	
+	return ans;
+}
+
+/* int binaryfunc(n,r){ return factRecursion(n)/factRecursion(r)/factRecursion(n-r)} */
+
+int main(){
+	
+	int n,r;
+	cin >> n >> r;
+	
+	cout << factRecursion(n) / factRecursion(r)*factRecursion(n-r);
+	
+	return 0;
+}
+
+
