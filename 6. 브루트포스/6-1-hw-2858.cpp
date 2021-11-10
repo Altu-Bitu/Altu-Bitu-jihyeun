@@ -17,13 +17,15 @@ int main(){
     int square = r+b;
 
     for(int W=3;W<=square;W++){
-        for(int L=W;L>=3;L--){ 
-        B = (W-2)*(L-2);
-        R = square-b;
-
-        if(r==R && b==B)
-        cout << L << " " << W << endl;
-        }
+    	int L = square/W;  // 1) 나누어 떨어지지 않을 때(정수가 아닐 경우)를 고려할까 했지만... 
+		
+	    B = (W-2)*(L-2);
+	    R = square-b;
+	
+	    if(r==R && b==B){ // 2) 여기서 2가지 모두를 검사하고 + int형이므로 애초에 square 조건에 맞지 않을 것같아 생략
+	        cout << L << " " << W << '\n';
+	        break;
+	    }
     }
     
     return 0;
